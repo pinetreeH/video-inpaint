@@ -5,3 +5,5 @@ build/
 *egg-info
 demo/
 pretrained_models/
+*.so
+*.pyc
