@@ -1,0 +1,7 @@
+.venv
+*.log
+.idea
+build/
+*egg-info
+demo/
+pretrained_models/
