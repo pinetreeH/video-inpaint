@@ -20,7 +20,7 @@ def parse_args():
     parser.add_argument('--model_name', type=str, default=None)
 
     parser.add_argument('--batch_size', type=int, default=1)
-    parser.add_argument('--n_threads', type=int, default=4)
+    parser.add_argument('--n_threads', type=int, default=1)
 
     parser.add_argument('--get_mask', action='store_true')
     parser.add_argument('--output_root', type=str, default=None)
