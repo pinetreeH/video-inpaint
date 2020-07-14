@@ -3,6 +3,9 @@
 pip install torch torchvision
 pip install opencv-python
 pip install mmcv cvbase
+pip install scipy
+pip install tqdm
+pip install tensorboardX
 
 
 cd ./models/FlowNet2_Models/resample2d_package/

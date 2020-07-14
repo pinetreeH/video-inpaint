@@ -7,3 +7,4 @@ demo/
 pretrained_models/
 *.so
 *.pyc
+__pycache__
