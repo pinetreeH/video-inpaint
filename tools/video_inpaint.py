@@ -1,10 +1,18 @@
-import argparse, os
+import argparse
+import os
 import sys
+
 sys.path.append(os.path.abspath(os.path.join(__file__, '..', '..')))
 
 import cvbase as cvb
 
 from tools.frame_inpaint import DeepFillv1
+from tools.test_scripts import test_initial_stage
+from tools.infer_flownet2 import infer
+from tools.propagation_inpaint import propagation
+from tools.test_scripts import test_refine_stage
+from dataset.data_list import gen_flow_initial_test_mask_list
+from dataset.data_list import gen_flow_refine_test_mask_list
 
 
 def parse_argse():
@@ -81,7 +89,6 @@ def parse_argse():
 
 
 def extract_flow(args):
-    from tools.infer_flownet2 import infer
     output_file = infer(args)
     flow_list = [x for x in os.listdir(output_file) if '.flo' in x]
     flow_start_no = min([int(x[:5]) for x in flow_list])
@@ -92,19 +99,16 @@ def extract_flow(args):
 
 
 def flow_completion(args):
-
     data_list_dir = os.path.join(args.dataset_root, 'data')
     if not os.path.exists(data_list_dir):
         os.makedirs(data_list_dir)
     initial_data_list = os.path.join(data_list_dir, 'initial_test_list.txt')
     print('Generate datalist for initial step')
 
-    from dataset.data_list import gen_flow_initial_test_mask_list
     gen_flow_initial_test_mask_list(flow_root=args.DATA_ROOT,
                                     output_txt_path=initial_data_list)
     args.EVAL_LIST = os.path.join(data_list_dir, 'initial_test_list.txt')
 
-    from tools.test_scripts import test_initial_stage
     args.output_root = os.path.join(args.dataset_root, 'Flow_res', 'initial_res')
     args.PRETRAINED_MODEL = args.PRETRAINED_MODEL_1
 
@@ -118,7 +122,6 @@ def flow_completion(args):
 
     if args.MS:
         args.ResNet101 = False
-        from tools.test_scripts import test_refine_stage
         args.PRETRAINED_MODEL = args.PRETRAINED_MODEL_2
         args.IMAGE_SHAPE = [320, 600]
         args.RES_SHAPE = [320, 600]
@@ -126,7 +129,7 @@ def flow_completion(args):
         args.output_root = os.path.join(args.dataset_root, 'Flow_res', 'stage2_res')
 
         stage2_data_list = os.path.join(data_list_dir, 'stage2_test_list.txt')
-        from dataset.data_list import gen_flow_refine_test_mask_list
+
         gen_flow_refine_test_mask_list(flow_root=args.DATA_ROOT,
                                        output_txt_path=stage2_data_list)
         args.EVAL_LIST = stage2_data_list
@@ -139,7 +142,7 @@ def flow_completion(args):
         args.output_root = os.path.join(args.dataset_root, 'Flow_res', 'stage3_res')
 
         stage3_data_list = os.path.join(data_list_dir, 'stage3_test_list.txt')
-        from dataset.data_list import gen_flow_refine_test_mask_list
+
         gen_flow_refine_test_mask_list(flow_root=args.DATA_ROOT,
                                        output_txt_path=stage3_data_list)
         args.EVAL_LIST = stage3_data_list
@@ -148,13 +151,10 @@ def flow_completion(args):
 
 
 def flow_guided_propagation(args):
-
     deepfill_model = DeepFillv1(pretrained_model=args.pretrained_model_inpaint,
                                 image_shape=args.img_shape)
 
-    from tools.propagation_inpaint import propagation
-    propagation(args,
-                frame_inapint_model=deepfill_model)
+    propagation(args, frame_inapint_model=deepfill_model)
 
 
 def main():

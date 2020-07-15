@@ -1,5 +1,7 @@
-import argparse, os
+import argparse
+import os
 import sys
+
 sys.path.append(os.path.abspath(os.path.join(__file__, '..', '..')))
 
 import torch
@@ -157,8 +159,10 @@ def test_refine_stage(args):
             res_flow_f = res_flow[:, :2, :, :]
             res_flow_r = res_flow[:, 2:, :, :]
 
-            res_complete_f = res_flow_f * mask[:, 10:11, :, :] + flow_masked[:, 10:12, :, :] * (1. - mask[:, 10:11, :, :])
-            res_complete_r = res_flow_r * mask[:,32:34,:,:] + flow_masked[:,32:34,:,:] * (1. - mask[:,32:34,:,:])
+            res_complete_f = res_flow_f * mask[:, 10:11, :, :] + flow_masked[:, 10:12, :, :] * (
+                    1. - mask[:, 10:11, :, :])
+            res_complete_r = res_flow_r * mask[:, 32:34, :, :] + flow_masked[:, 32:34, :, :] * (
+                    1. - mask[:, 32:34, :, :])
 
             output_dir_split = output_dir.split(',')
 
