@@ -37,7 +37,7 @@ def parse_argse():
     parser.add_argument('--ResNet101', action='store_true')
     parser.add_argument('--MS', action='store_true')
     parser.add_argument('--batch_size', type=int, default=1)
-    parser.add_argument('--n_threads', type=int, default=16)
+    parser.add_argument('--n_threads', type=int, default=0)
 
     parser.add_argument('--get_mask', action='store_true')
     parser.add_argument('--output_root', type=str,
