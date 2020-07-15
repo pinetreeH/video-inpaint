@@ -93,7 +93,7 @@ def test_initial_stage(args):
     dfc_resnet.eval()
     resume_iter = load_ckpt(args.PRETRAINED_MODEL,
                             [('model', dfc_resnet)], strict=True)
-    print('Load Pretrained Model from', args.PRETRAINED_MODEL)
+    print('[test_initial_stage]Load Pretrained Model from', args.PRETRAINED_MODEL)
 
     task_bar = ProgressBar(eval_dataset.__len__())
     for i, item in enumerate(eval_dataloader):
@@ -143,7 +143,7 @@ def test_refine_stage(args):
     resume_iter = load_ckpt(args.PRETRAINED_MODEL,
                             [('model', dfc_resnet)], strict=True)
 
-    print('Load Pretrained Model from', args.PRETRAINED_MODEL)
+    print('[test_refine_stage]Load Pretrained Model from', args.PRETRAINED_MODEL)
 
     task_bar = ProgressBar(eval_dataset.__len__())
     for i, item in enumerate(eval_dataloader):
