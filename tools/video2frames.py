@@ -32,7 +32,7 @@ def video2frames(input_file, output_dir):
             print("write {} frames ".format(num))
             break
         num = num + 1
-        output_file_path = os.path.join(output_dir, str(num) + ".jpg")
+        output_file_path = os.path.join(output_dir, "{:0>10d}".format(num) + ".jpg")
         cv2.imwrite(output_file_path, frame)
 
     print("video2frames done")
