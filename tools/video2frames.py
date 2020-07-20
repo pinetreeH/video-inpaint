@@ -1,5 +1,12 @@
 import cv2
 import os
+import argparse
+import shutil
+
+parser = argparse.ArgumentParser()
+parser.add_argument("--raw_video", type=str, default=None)
+parser.add_argument("--frame_dir", type=str, default=None)
+args = parser.parse_args()
 
 
 def decode_fourcc(v):
@@ -9,7 +16,8 @@ def decode_fourcc(v):
 
 def video2frames(input_file, output_dir):
     v = cv2.VideoCapture(input_file)
-    print("video {} FPS: {}".format(input_file, v.get(cv2.CAP_PROP_FPS)))
+    print("video: {}".format(input_file))
+    print("video FPS: {}".format(v.get(cv2.CAP_PROP_FPS)))
     print("video frame count: {}".format(v.get(cv2.CAP_PROP_FRAME_COUNT)))
     print("video frame width: {}".format(v.get(cv2.CAP_PROP_FRAME_WIDTH)))
     print("video frame height: {}".format(v.get(cv2.CAP_PROP_FRAME_HEIGHT)))
@@ -27,8 +35,22 @@ def video2frames(input_file, output_dir):
         output_file_path = os.path.join(output_dir, str(num) + ".jpg")
         cv2.imwrite(output_file_path, frame)
 
+    print("video2frames done")
+
+
+def main():
+    if not os.path.exists(args.raw_video):
+        print("raw video file not exists!")
+        return
+
+    if os.path.exists(args.frame_dir):
+        print("delete dir: {}".format(args.frame_dir))
+        shutil.rmtree(args.frame_dir)
+    print("output dir [frame dir]: {}".format(args.frame_dir))
+    os.mkdir(args.frame_dir)
+
+    video2frames(args.raw_video, args.frame_dir)
+
 
 if __name__ == "__main__":
-    input_file = './testdata/v1.mp4'
-    output_dir = "./testdata/v1-frames-tmp"
-    video2frames(input_file, output_dir)
+    main()
