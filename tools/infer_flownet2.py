@@ -49,6 +49,8 @@ def infer(args):
     dataloader_ = DataLoader(dataset_, batch_size=1, shuffle=False)
     task_bar = ProgressBar(dataset_.__len__())
 
+    output_file = ""
+
     for i, (f1, f2, output_path_) in enumerate(dataloader_):
         f1 = f1.to(device)
         f2 = f2.to(device)
