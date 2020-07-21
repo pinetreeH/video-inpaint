@@ -17,6 +17,11 @@ from dataset.data_list import gen_flow_refine_test_mask_list
 
 def parse_argse():
     parser = argparse.ArgumentParser()
+
+    #debug
+    parser.add_argument('--flow_output_dir', type=str, default=None)
+    #
+
     parser.add_argument('--dataset_root', type=str,
                         default=None)
     # FlowNet2
@@ -89,7 +94,13 @@ def parse_argse():
 
 
 def extract_flow(args):
-    output_file = infer(args)
+    output_file = None
+    if  args.flow_output_dir is None:
+        output_file = infer(args)
+    else:
+        print('---> extract_flow use existed flow: {}'.formart(args.flow_output_dir))
+        output_file = args.flow_output_dir
+    
     flow_list = [x for x in os.listdir(output_file) if '.flo' in x]
     flow_start_no = min([int(x[:5]) for x in flow_list])
 
