@@ -98,7 +98,7 @@ def extract_flow(args):
     if  args.flow_output_dir is None:
         output_file = infer(args)
     else:
-        print('---> extract_flow use existed flow: {}'.formart(args.flow_output_dir))
+        print('---> extract_flow use existed flow: {}'.format(args.flow_output_dir))
         output_file = args.flow_output_dir
     
     flow_list = [x for x in os.listdir(output_file) if '.flo' in x]
